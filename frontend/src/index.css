@@ -1,0 +1,18 @@
+body {
+  height: 100vh;
+  background-color: black;
+  overflow: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  overflow: auto;
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
