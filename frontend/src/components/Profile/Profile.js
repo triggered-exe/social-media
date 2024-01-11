@@ -168,6 +168,7 @@ const Profile = () => {
                         {/* delete button of post  */}
                         {post.creator._id === user._id && (
                           <button
+                          className={styles.postDeleteButton}
                             onClick={(e) => handleDeletePost(post._id, index)}
                           >
                             Delete

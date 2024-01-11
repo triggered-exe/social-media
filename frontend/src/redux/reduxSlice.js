@@ -111,6 +111,21 @@ export const getPosts = createAsyncThunk('users/getPosts', async ( queryParams, 
     }
   });
 
+//   get a post 
+export const getSinglePost = createAsyncThunk('users/getSinglePost', async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(`/api/post/getsinglepost/${id}`);
+      console.log(response.data)    
+      return response.data;
+    //   thunkAPI.dispatch(actions.setPosts([response.data.post])); // Dispatch the action with user data
+    //   toast.success(response.data.message)
+    } catch (err) {
+    //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
+      console.log(err.response); // Log the error response
+      toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
+    }
+  });
+
 
 //   like a post
 export const likePost = createAsyncThunk('users/likePost', async ({id, posts, userPosts, index}, thunkAPI) => {

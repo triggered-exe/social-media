@@ -25,10 +25,9 @@
     height: 50%;
     object-fit: contain;
     background-color: transparent;
-    
 }
 
-.userProfile .userDetails {
+    .userProfile .userDetails {
     min-width: 200px;
     min-height: 200px;
     flex-grow: 1;
@@ -59,7 +58,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.295);
     border-bottom: 1px solid rgba(255, 255, 255, 0.295);
     display: flex;
-    
+    cursor: pointer;
 }
 
 .userProfileHeader div {
@@ -110,18 +109,19 @@
    overflow: hidden;
 }
 
-.postHeader button {
+.postHeader .postDeleteButton {
     position: absolute;
     text-align: right;
     right: 10px;
     background-color: #ff000099;
     color: white;
     border: none;
-    padding: 3px;
+    padding: 5px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
-.postHeader button:hover {
+.postHeader .postDeleteButton:hover {
     color: black;
     background-color: rgb(255, 255, 255);
     transform: scale(0.95);
@@ -233,7 +233,7 @@
 
  .updateUserFormBodyItem input {
     color: black;
-    height: 25px;
+    padding: 8px;
     outline: none;
  }
  .updateUserFormBodyItem input[type="file"] {

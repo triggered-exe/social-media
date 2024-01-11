@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { getPost, getUserPosts, createPost, getComments, addComment, deleteComment, deletePost, likePost, likeComment } from '../controllers/post.controller.js';
+import { getAllPost,getSinglePost, getUserPosts, createPost, getComments, addComment, deleteComment, deletePost, likePost, likeComment } from '../controllers/post.controller.js';
 import isAuthenticated from "../middlewares/authentication.middleware.js";
 import multer from '../middlewares/multer.middleware.js'
 
@@ -12,7 +12,8 @@ router.get('/', (req, res, next) => {
     }
 })
 
-router.route('/getpost').get(isAuthenticated, getPost);
+router.route('/getpost').get(isAuthenticated, getAllPost);
+router.route('/getsinglepost/:id').get(isAuthenticated, getSinglePost);
 router.route('/getuserposts/:id').get(isAuthenticated, getUserPosts);
 router.route('/create').post(isAuthenticated, multer.single("file"), createPost);
 router.route('/deletepost/:id').delete(isAuthenticated, deletePost);

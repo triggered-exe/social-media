@@ -1,9 +1,16 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from "react";
 import styles from "./Posts.module.css";
+import PostModal from "../PostModal/PostModal";
 
-import {useDispatch, useSelector } from 'react-redux';
-import {getPosts, likePost, createPost, deletePost, selector} from '../../redux/reduxSlice';
-import { formatDistanceToNow } from 'date-fns';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getPosts,
+  likePost,
+  createPost,
+  deletePost,
+  selector,
+} from "../../redux/reduxSlice";
+import { formatDistanceToNow, set } from "date-fns";
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -11,6 +18,8 @@ const Posts = () => {
   const [file, setFile] = useState(null);
   const [modal, setModal] = useState(false);
   const { user, posts } = useSelector(selector);
+  const [postModal, setPostModal] = useState(false);
+  const [postId, setPostId] = useState(null);
 
   useEffect(() => {
     console.log(file);
@@ -51,9 +60,17 @@ const Posts = () => {
     dispatch(deletePost({ id, posts, index }));
   };
 
+  //   handling post modal
+  const handlePostModal = (id)=>{
+    setPostId(id);
+    setPostModal(!postModal);
+    console.log('post',postId);
+    console.log('id',id);
+}
+
   return (
     <>
-    {/* top search bar  */}
+      {/* top search bar  */}
       {user && (
         <div
           className={styles.searchBar}
@@ -69,7 +86,7 @@ const Posts = () => {
             }
             alt="icon"
           />
-          <input type="text" placeholder="what's happening?"  />
+          <input type="text" placeholder="what's happening?" />
           <img
             src="https://img.icons8.com/ios-filled/50/FFFFFF/image--v1.png"
             alt="icon"
@@ -77,6 +94,7 @@ const Posts = () => {
         </div>
       )}
 
+      {/* show posts */}
       {posts && (
         <>
           <div className={styles.postsContainer}>
@@ -139,8 +157,11 @@ const Posts = () => {
                     />
                     {post.likesCount}
                   </div>
-
-                  <div className={styles.commentsContainer}>
+                  {/* comments container of post   */}
+                  <div
+                    className={styles.commentsContainer}
+                    onClick={(e) => handlePostModal(post._id)}
+                  >
                     <img
                       src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/FA5252/external-comments-social-media-ui-tanah-basah-glyph-tanah-basah.png"
                       alt="external-comments-social-media-ui-tanah-basah-glyph-tanah-basah"
@@ -190,6 +211,10 @@ const Posts = () => {
           </div>
         </div>
       )}
+
+      {/* show post modal */}
+      {postModal && <PostModal postId={postId}/>
+      }
     </>
   );
 };

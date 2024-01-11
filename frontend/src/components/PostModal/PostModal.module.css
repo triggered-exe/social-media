@@ -1,0 +1,228 @@
+.postModalContainer {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: flex;
+    background-color: rgb(0, 0, 0);
+    flex-wrap: nowrap;
+}
+
+.postModalContainer > div {
+    width: 50%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.171);
+}
+
+.postModalContainer .selectedPost{
+    border-right: 1px solid rgba(255, 255, 255, 0.322);
+   
+}
+
+.selectedPost{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.postHeader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    gap: 1rem;
+    padding: 24px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.295);
+   overflow: hidden;
+}
+
+.postHeader button {
+    position: absolute;
+    text-align: right;
+    right: 10px;
+    background-color: #ff000099;
+    color: white;
+    border: none;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.postHeader button:hover {
+    color: black;
+    background-color: rgb(255, 255, 255);
+    transform: scale(0.95);
+  }
+
+.postHeader img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.postBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #83838348;
+    flex-grow: 1;
+}
+
+.postContent {
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.295);
+    padding-left: 60px;
+}
+
+.postMedia{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: none;
+    transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.postMedia:hover{
+    background-color: #838383;
+}
+
+.postMedia img {
+    max-height: 15rem;
+    object-fit: contain;
+}
+.postMedia video {
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.postButtons{
+    height: 40px;
+    width: 100%;
+    display: flex;
+    gap:1px;
+}
+
+.postButtons div{
+    flex: 1; /* Equal width for both items */
+    width: 50%; /* Cover half of the container */
+    /* border: 1px solid #ffffff; */
+    height: 100%;
+    background-color: rgba(0, 162, 255, 0.836);
+    cursor: pointer;
+  }
+
+  .postButtons div:hover {
+    background-color: #0077ff;
+  }
+
+  .likesContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .likesContainer img{
+     height: 70%;
+     color: red;
+  }
+
+  .comments{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .comments img{
+    height: 70%;
+    color: red;
+ }
+
+
+  /* comments section */
+ 
+
+  .commentSubContainer {
+    width: 100%;
+    /* overflow: hidden; */
+    height: auto;
+    overflow: scroll;
+  }
+
+  
+  .commentHeader {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(77, 71, 71, 0.973);
+    overflow: hidden;
+    /* color: black; */
+    background-color: rgba(0, 0, 0, 0.021);
+  }
+
+  .commentHeader img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.commentContent {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.295);
+  padding-left: 60px;
+  background-color: #6dffe783;
+  /* height: 100px !important; */
+}
+
+
+@media screen and (max-width: 750px) {
+    .postModalContainer{
+        flex-direction: column;
+    }
+
+    .selectedPost{
+        justify-content: flex-start;
+        height: auto;
+        min-height: 15vh;
+    }
+
+    .postModalContainer > div {
+        width: 100%;
+        height: auto;
+        /*  */
+    }
+
+
+    .postBody {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color: #83838348;
+        min-height: 40px;
+        flex-grow: 1;
+    }
+    .postButtons {
+        min-height: 40px;
+    }
+
+    .postMedia{
+        width: 100%;
+        height: 90%;
+        text-align: center;
+        overflow: hidden;
+        border-bottom: none;
+    }
+}

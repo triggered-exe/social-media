@@ -4,8 +4,48 @@ import Comment from '../models/comment.model.js';
 import fs from 'fs';
 import customError from '../utils/customErrors.js';
 
+
+// function to get a single post
+export const getSinglePost = async (req, res, next) => {
+    try {
+        const postId = req.params.id;
+        if (!postId) {
+            return next(new customError("Post id is required", 400));
+        }
+
+        // check if the post exists
+        const post = await Post.findById(postId)
+            .populate({
+                path: "creator",
+                select: 'name image'
+            });
+
+        if (!post) {
+            return next(new customError("Post not found", 404));
+        }
+
+        // find the comments for the post
+        const comments = await Comment.find({ post: postId })
+            .populate({
+                path: "creator",
+                select: 'name image'
+            });
+
+        console.log('single post sent successfully to the user');
+        return res.status(200).json({
+            success: true,
+            post,
+            comments,
+            message: "Post fetched successfully"
+        });
+    } catch (error) {
+        next(new customError(error.message, 500));
+    }
+};
+
+
 // functoon to get all the post
-export const getPost = async (req, res, next) => {
+export const getAllPost = async (req, res, next) => {
     try {
         const { page = 1, limit = 10 } = req.query;
 
