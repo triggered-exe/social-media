@@ -11,7 +11,6 @@ import Home from "./components/Home/Home.js";
 import Login from "./components/Login/Login.js";
 import Signup from "./components/Signup/Signup.js";
 import Profile from "./components/Profile/Profile.js";
-
 import { useDispatch, useSelector } from "react-redux";
 import {fetchLoginStatus, selector} from './redux/reduxSlice.js';
 import { useEffect } from "react";

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   actions,
@@ -14,7 +13,7 @@ import {
 import { formatDistanceToNow, set } from "date-fns";
 import { Hourglass } from "react-loader-spinner";
 
-const Profile = ({ id }) => {
+  const Profile = ({ id }) => {
   const dispatch = useDispatch();
   const { user, userPosts } = useSelector(selector);
   const [name, setName] = useState(user.name);
@@ -137,6 +136,7 @@ const Profile = ({ id }) => {
         <p>Followers: {profileUser.followersCount}</p>
       </div>
     </div>
+
     {/* for updating and viewing posts */}
     <section className={styles.userPostsandUpdateContainer}>
       {/* if id is same as logged in user then show update section else only posts */}
@@ -261,7 +261,8 @@ const Profile = ({ id }) => {
                             Your browser does not support the video tag.
                           </video>
                         ) : post.media.url.endsWith(".jpg") ||
-                          post.media.url.endsWith(".png") ? (
+                           post.media.url.endsWith(".png") || 
+                           post.media.url.endsWith(".webp") ? (
                           <img src={post.media.url} alt="Image" />
                         ) : null}
                       </div>
@@ -302,6 +303,7 @@ const Profile = ({ id }) => {
         </div>
       )}
     </section>
+
   </div>
         
    );

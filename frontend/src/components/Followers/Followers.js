@@ -4,7 +4,7 @@ import styles from './Followers.module.css'
 const Followers = () => {
   return (
     <div>
-      
+      coming soon......! :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :) :
     </div>
   )
 }

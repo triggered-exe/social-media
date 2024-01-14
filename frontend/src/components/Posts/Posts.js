@@ -16,19 +16,11 @@ const Posts = ({setPage, Profile}) => {
   const dispatch = useDispatch();
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
-  const [modal, setModal] = useState(false);
+  const [createPostModal, setCreatePostModal] = useState(false);
   const { user, posts } = useSelector(selector);
   const [postModal, setPostModal] = useState(false);
   const [postId, setPostId] = useState(null);
 
-
-  console.log(setPage)
-  console.log( Profile)
-  console.log('posts')
-
-  useEffect(() => {
-    console.log(file);
-  }, [file]);
 
   // get the posts
   useEffect(() => {
@@ -47,7 +39,7 @@ const Posts = ({setPage, Profile}) => {
       file,
     };
     console.log(posts);
-    setModal(!modal);
+    setCreatePostModal(!createPostModal);
     dispatch(createPost({ data, posts }));
   };
 
@@ -80,7 +72,7 @@ const Posts = ({setPage, Profile}) => {
         <div
           className={styles.searchBar}
           onClick={(e) => {
-            setModal(!modal);
+            setCreatePostModal(!createPostModal);
           }}
         >
           <img
@@ -186,13 +178,13 @@ const Posts = ({setPage, Profile}) => {
       )}
 
       {/* create new post modal  */}
-      {modal && (
+      {createPostModal && (
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <span
               className={styles.close}
               onClick={(e) => {
-                setModal(!modal);
+                setCreatePostModal(!createPostModal);
               }}
             >
               &times;

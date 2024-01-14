@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./PostModal.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { formatDistanceToNow, set } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { Hourglass } from "react-loader-spinner";
 import {
   getSinglePost,
@@ -30,9 +30,6 @@ const PostModal = ({ postId, setPostModal }) => {
       setLoading(false);
     });
   }, []);
-
-//   console.log(post);
-//   console.log(comments);
 
   const formatDate = (date) => {
     if (!date) {
@@ -118,7 +115,8 @@ const PostModal = ({ postId, setPostModal }) => {
                     Your browser does not support the video tag.
                   </video>
                 ) : post.media.url.endsWith(".jpg") ||
-                  post.media.url.endsWith(".png") ? (
+                  post.media.url.endsWith(".png") || 
+                  post.media.url.endsWith(".webp") ? (
                   <img src={post.media.url} alt="Image" />
                 ) : null}
               </div>

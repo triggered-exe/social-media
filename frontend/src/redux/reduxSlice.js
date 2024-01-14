@@ -8,7 +8,6 @@ const initialState = {
     loading: true,
     user: null,
     posts: [],
-    userPosts: [],
     error: ''
 }
 
@@ -26,16 +25,9 @@ const reduxSlice = createSlice({
         },
         setPosts : (state, action) => {
             state.posts = action.payload;
-        },
-        setUserPosts: (state, action) => {
-            state.userPosts = action.payload;
         }
-    },
-    extraReducers: (builder) => {
     }
 })
-
-
 
 // check login status
 export const fetchLoginStatus = createAsyncThunk('users/fetchLoginStatus', async (_, thunkAPI) => {
@@ -136,10 +128,6 @@ export const likePost = createAsyncThunk('users/likePost', async ({id, posts, pr
 
     //   check whether to like from the userPost page or profile page
       if(profilePage){
-        // let newPosts = [...userPosts];
-        // newPosts[index] = updatedPost;
-        // thunkAPI.dispatch(actions.setUserPosts(newPosts)); // Assuming you have a setUserPosts action
-        // toast.success('liked successfully')
         return updatedPost;
       }else{
         let newPosts = [...posts];

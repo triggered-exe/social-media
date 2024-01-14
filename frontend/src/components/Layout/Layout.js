@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div className={styles.layout}>
         <div className={styles.navbar}>
-                <span onClick={()=>navigate('/')}>Twipper</span>
+                <span onClick={()=>navigate('/')}>2witter</span>
         </div>
         <Outlet />
     </div>
