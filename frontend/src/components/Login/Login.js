@@ -6,7 +6,7 @@ import {login, selector} from '../../redux/reduxSlice';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
@@ -24,8 +24,6 @@ const Login = () => {
       navigate('/');
     }
   },[user])
-
-  
 
   return (
     <div className={styles.container}>

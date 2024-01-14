@@ -28,8 +28,6 @@ function App() {
 
   const protect= (children) => (user ? children : <Login />);
 
-
-
   const routes = createRoutesFromElements(
     
     <Route path="/" element={<Navbar />}>

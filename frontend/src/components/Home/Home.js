@@ -12,7 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(null);
-  const [modal, setModal] = useState(false);
+  // const [modal, setModal] = useState(false);
   const { user } = useSelector(selector);
 
   return (
