@@ -10,9 +10,9 @@ import {
   deletePost,
   selector,
 } from "../../redux/reduxSlice";
-import { formatDistanceToNow, set } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 
-const Posts = () => {
+const Posts = ({setPage, Profile}) => {
   const dispatch = useDispatch();
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
@@ -20,6 +20,11 @@ const Posts = () => {
   const { user, posts } = useSelector(selector);
   const [postModal, setPostModal] = useState(false);
   const [postId, setPostId] = useState(null);
+
+
+  console.log(setPage)
+  console.log( Profile)
+  console.log('posts')
 
   useEffect(() => {
     console.log(file);
@@ -103,6 +108,10 @@ const Posts = () => {
                 {/* post header */}
                 <div className={styles.postHeader}>
                   <img
+                //   setting the profile page in the Home.js using props
+                    onClick={() => {
+                        setPage(<Profile id={post.creator._id} />);
+                      }}
                     src={
                       post.creator.image
                         ? post.creator.image.url
@@ -116,7 +125,7 @@ const Posts = () => {
                   </p>
                   {/* delete button of post  */}
                   {post.creator._id === user._id && (
-                    <button onClick={(e) => handleDeletePost(post._id, index)}>
+                    <button  onClick={(e) => handleDeletePost(post._id, index)}>
                       Delete
                     </button>
                   )}
@@ -128,13 +137,14 @@ const Posts = () => {
                 {post.media && (
                   <div className={styles.postMedia}>
                     {post.media.url.endsWith(".mp4") ||
-                    post.media.url.endsWith(".webm") ? (
+                    post.media.url.endsWith(".webm")  ? (
                       <video controls>
                         <source src={post.media.url} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                     ) : post.media.url.endsWith(".jpg") ||
-                      post.media.url.endsWith(".png") ? (
+                      post.media.url.endsWith(".png") || 
+                      post.media.url.endsWith(".webp") ? (
                       <img src={post.media.url} alt="Image" />
                     ) : null}
                   </div>
@@ -213,7 +223,7 @@ const Posts = () => {
       )}
 
       {/* show post modal */}
-      {postModal && <PostModal postId={postId}/>
+      {postModal && <PostModal postId={postId} setPostModal={setPostModal}/>
       }
     </>
   );

@@ -69,6 +69,7 @@
     border: none;
     padding: 3px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .postHeader button:hover {
@@ -81,6 +82,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .postContent {

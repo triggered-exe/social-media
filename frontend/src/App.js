@@ -10,6 +10,7 @@ import Navbar from "./components/Layout/Layout.js";
 import Home from "./components/Home/Home.js";
 import Login from "./components/Login/Login.js";
 import Signup from "./components/Signup/Signup.js";
+import Profile from "./components/Profile/Profile.js";
 
 import { useDispatch, useSelector } from "react-redux";
 import {fetchLoginStatus, selector} from './redux/reduxSlice.js';
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={protect(<Home />)} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/profile' element={<Profile />} />
     </Route>
   );
 

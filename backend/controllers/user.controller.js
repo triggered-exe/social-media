@@ -2,6 +2,7 @@ import CustomError from "../utils/customErrors.js";
 import Users from "../models/user.model.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 import fs from "fs";
+import { compareSync } from "bcrypt";
 
 //for registration of new users
 export const signUp = async (req, res, next) => {
@@ -75,6 +76,20 @@ export const loggedUser = async (req, res, next) => {
   try {
     const user = req.user;
 
+    res.status(200).json({
+        success: true,
+        user,
+    });
+  } catch (error) {
+    next(new CustomError(error.message, 500));
+  }
+}
+
+// get user profile 
+export const getUserProfile = async (req, res, next) => { 
+  try {
+    console.log(req.params.id)
+    const user = await Users.findById(req.params.id);
     res.status(200).json({
         success: true,
         user,

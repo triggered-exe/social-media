@@ -6,20 +6,19 @@ import { formatDistanceToNow, set } from "date-fns";
 import { Hourglass } from "react-loader-spinner";
 import {
   getSinglePost,
-  actions,
-  getUserPosts,
-  likePost,
-  updateProfile,
-  deletePost,
+  addComment,
+  deleteComment,
   selector,
 } from "../../redux/reduxSlice";
 
-const PostModal = ({ postId }) => {
+const PostModal = ({ postId, setPostModal }) => {
   const dispatch = useDispatch();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector(selector);
+  const [commentModal, setCommentModal] = useState(false);
+  const [commentContent, setCommentContent] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -32,8 +31,8 @@ const PostModal = ({ postId }) => {
     });
   }, []);
 
-  console.log(post);
-  console.log(comments);
+//   console.log(post);
+//   console.log(comments);
 
   const formatDate = (date) => {
     if (!date) {
@@ -42,6 +41,34 @@ const PostModal = ({ postId }) => {
     }
     return formatDistanceToNow(new Date(date), { addSuffix: true });
   };
+
+//   function to add new comment 
+  const handleAddComment = (e,id) => {
+    e.preventDefault();
+    console.log(post._id)
+    console.log(commentContent)
+    // update the comment in the backend and push it to the comments list
+    dispatch(addComment({id:post._id,content:commentContent}))
+    .then((res)=>{
+        console.log(res.payload);
+        setComments([res.payload,...comments]);
+    })
+    .finally(()=>{
+        setCommentContent("");
+        setCommentModal(false);
+    })
+  }
+
+//   function to delete a comment
+  const handleDeleteComment = (id) => {
+    console.log(id)
+    // update the comment in the backend and push it to the comments list
+    dispatch(deleteComment(id))
+    .then((res)=>{
+        console.log(res.payload);
+        setComments(comments.filter((comment)=>comment._id!==id));
+    })
+  }
 
   // show loading spinner while fetching data
   if (loading) {
@@ -75,6 +102,7 @@ const PostModal = ({ postId }) => {
             />
             <p>{post.creator?.name}</p>
             <p className={styles.postTime}>{formatDate(post.createdAt)}</p>
+            <span className={styles.closePostModalX} onClick={()=>setPostModal(false)}>&#10006;</span>
           </div>
           <div className={styles.postBody}>
             <div className={styles.postContent}>
@@ -112,7 +140,7 @@ const PostModal = ({ postId }) => {
               {post.likesCount}
             </div>
             {/* Comments container */}
-            <div className={styles.comments}>
+            <div className={styles.comments} onClick={()=>setCommentModal(!commentModal)}>
               <img
                 src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/48/FA5252/external-comments-social-media-ui-tanah-basah-glyph-tanah-basah.png"
                 alt="external-comments-social-media-ui-tanah-basah-glyph-tanah-basah"
@@ -127,6 +155,7 @@ const PostModal = ({ postId }) => {
       {comments && (
         <div className={styles.commentsContainer}>
           {/* Map through comments array and display each comment */}
+          {comments.length === 0 && (<div className={styles.noCommentsDiv}>No comments to show</div>)}
           {comments.map((comment) => (
             <div key={comment._id} className={styles.commentSubContainer}>
               {/* Display each comment */}
@@ -142,15 +171,30 @@ const PostModal = ({ postId }) => {
                 <p className={styles.postTime}>
                   {formatDate(comment.createdAt)}
                 </p>
+                {/* delete button for the comment */}
+                {comment.creator._id === user._id && (
+                    <button className={styles.commentDeleteButton} onClick={(e) => handleDeleteComment(comment._id)}>
+                      Delete
+                    </button>
+                  )}
               </div>
               <div className={styles.commentContent}>
                 <p>{comment.content}</p>
               </div>
-
-              {/* Display other comment details as needed */}
             </div>
           ))}
         </div>
+      )}
+
+      {/* comment modal */}
+      {commentModal && (
+        <section className={styles.commentModal}>
+          <form onSubmit={(e)=>handleAddComment(e)}>
+            <span className={styles.closeModalX} onClick={()=>setCommentModal(!commentModal)}>&#10006;</span>
+            <input type="text" placeholder="Add a comment"  value={commentContent} onChange={e=>setCommentContent(e.target.value)} required className={styles.commentInput} autoFocus={true} maxLength={200} minLength={1} pattern="[a-zA-Z0-9 ]+" title="Only alphabets and numbers are allowed" onInvalid={e=>e.target.setCustomValidity("Please enter a valid comment")} onInput={e=>e.target.setCustomValidity("")}/>
+            <button type="submit">Post</button>
+          </form>
+          </section>
       )}
     </div>
   );

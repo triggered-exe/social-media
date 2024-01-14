@@ -11,18 +11,19 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [page, setPage] = useState(<Posts />);
+  // const [page, setPage] = useState(<Profile id="6592571dbe87cc611ccf263e"/>);
+  const [page, setPage] = useState(null);
   const [modal, setModal] = useState(false);
   const { user } = useSelector(selector);
 
   return (
-    <div className={styles.main}>
+     <div className={styles.main}>
       {/* left side navigation bar */}
       <section className={styles.leftSidebar}>
         <div
           className={styles.navListItem}
           onClick={() => {
-            setPage(<Posts />);
+            setPage(<Posts temp='joo' setPage={setPage} Profile={Profile} />);
           }}
         >
           <img
@@ -103,7 +104,7 @@ const Home = () => {
       </section>
 
       {/* middle container */}
-      <div className={styles.middleContainer}>{page}</div>
+      <div className={styles.middleContainer}>{ page || <Posts temp='joo' setPage={setPage} Profile={Profile} />}</div>
 
       {/* right side bar */}
       <div className={styles.rightSidebar}></div>

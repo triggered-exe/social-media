@@ -15,6 +15,7 @@ export const getSinglePost = async (req, res, next) => {
 
         // check if the post exists
         const post = await Post.findById(postId)
+            .sort({ createdAt: -1 }) 
             .populate({
                 path: "creator",
                 select: 'name image'
@@ -26,6 +27,7 @@ export const getSinglePost = async (req, res, next) => {
 
         // find the comments for the post
         const comments = await Comment.find({ post: postId })
+            .sort({ createdAt: -1 }) 
             .populate({
                 path: "creator",
                 select: 'name image'
@@ -137,7 +139,8 @@ export const createPost = async (req, res, next) => {
             }
 
               const result = await cloudinary.uploader.upload(req.file.path, options);
-    
+
+            //   console.log('result is: ', result)
               // Delete the file from disk storage after uploading to Cloudinary
               fs.unlinkSync(req.file.path);
 
@@ -220,12 +223,25 @@ export const addComment = async (req, res, next) => {
     try {
         const { content } = req.body;
 
-        if(!content){
+        if(!content){   
             return next(new customError("Content is required", 400));
         };
 
+        // check if the post exists
+        const post = await Post.findById(req.params.id);
+
+        if(!post){
+            return next(new customError("Post not found", 404));
+        }
+
         // create the post in the database with the user id and content.
-        const comment = await Comment.create({ content, creator: req.user._id, post: req.params.id });
+        const comment = await Comment.create({ content, creator: req.user._id, post: req.params.id })
+        await  comment.populate({
+            path: "creator",
+            select: 'name image'
+        })
+
+        await comment.save();
 
         res.status(200).json({
             success: true,
@@ -241,8 +257,9 @@ export const addComment = async (req, res, next) => {
 // fucntion to delete comment.
 export const deleteComment = async (req, res, next) => {
     try {
+        console.log(req.params.id)
         const comment = await Comment.findById(req.params.id);
-
+       
         if(!comment){
             return next(new customError("Comment not found", 404));
         }

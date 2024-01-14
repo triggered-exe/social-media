@@ -128,16 +128,19 @@ export const getSinglePost = createAsyncThunk('users/getSinglePost', async (id, 
 
 
 //   like a post
-export const likePost = createAsyncThunk('users/likePost', async ({id, posts, userPosts, index}, thunkAPI) => {
+export const likePost = createAsyncThunk('users/likePost', async ({id, posts, profilePage, index}, thunkAPI) => {
     try {
+        console.log(id)
       const response = await axios.post(`/api/post/likepost/${id}`);
       const updatedPost = response.data.post;
 
     //   check whether to like from the userPost page or profile page
-      if(userPosts){
-        let newPosts = [...userPosts];
-        newPosts[index] = updatedPost;
-        thunkAPI.dispatch(actions.setUserPosts(newPosts)); // Assuming you have a setUserPosts action
+      if(profilePage){
+        // let newPosts = [...userPosts];
+        // newPosts[index] = updatedPost;
+        // thunkAPI.dispatch(actions.setUserPosts(newPosts)); // Assuming you have a setUserPosts action
+        // toast.success('liked successfully')
+        return updatedPost;
       }else{
         let newPosts = [...posts];
         newPosts[index] = updatedPost;
@@ -195,7 +198,8 @@ export const createPost = createAsyncThunk('users/createPost', async ({data, pos
 export const getUserPosts = createAsyncThunk('users/getUserPosts', async (id, thunkAPI) => {
     try {
       const response = await axios.get(`/api/post/getuserposts/${id}`);
-      thunkAPI.dispatch(actions.setUserPosts(response.data.posts)); // Dispatch the action with user data
+    //   thunkAPI.dispatch(actions.setUserPosts(response.data.posts)); // Dispatch the action with user data
+      return response.data.posts;
     //   toast.success(response.data.message)
     } catch (err) {
     //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
@@ -203,6 +207,21 @@ export const getUserPosts = createAsyncThunk('users/getUserPosts', async (id, th
       toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
     }
   });
+
+//   get a user profile
+export const getUserProfile = createAsyncThunk('users/getUserProfile', async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(`/api/user/getuserprofile/${id}`);
+    //   thunkAPI.dispatch(actions.setUserProfile(response.data.user)); // Dispatch the action with user data
+     toast.success(response.data.message)
+    return response.data.user;
+    } catch (err) {
+    //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
+      console.log(err.response); // Log the error response
+      toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
+    }
+  });
+
 
 //   update user profile
 export const updateProfile = createAsyncThunk('users/updateprofile', async (data, thunkAPI) => {
@@ -214,6 +233,36 @@ export const updateProfile = createAsyncThunk('users/updateprofile', async (data
         formData.append('email', data.email);
       const response = await axios.put(`/api/user/update-profile`, formData);
       thunkAPI.dispatch(actions.setAuthStatus(response.data.user)); // Dispatch the action with user data
+      toast.success(response.data.message);
+    } catch (err) {
+    //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
+      console.log(err.response); // Log the error response
+      toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
+    }
+  });
+
+
+//   add a new Comment
+export const addComment = createAsyncThunk('users/addComment', async ({id, content}, thunkAPI) => {
+    try {
+        console.log(id, content)
+      const response = await axios.post(`/api/post/addcomment/${id}`, { content });
+      const comment = response.data.comment;
+      console.log(comment)
+      return comment;
+    } catch (err) {
+    //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
+      console.log(err.response); // Log the error response
+      toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
+    }
+  } );
+
+//   delete a comment
+export const deleteComment = createAsyncThunk('users/deleteComment', async (id, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/api/post/deletecomment/${id}`);
+      const comment = response.data.comment;
+      console.log(comment)
       toast.success(response.data.message);
     } catch (err) {
     //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
