@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000', // Allow requests from this origin
+    origin: ['http://localhost:3000','https://social-media-clone-mern-stack.vercel.app', process.env.Frontend_URL], // Allow requests from this origin
     credentials: true, // Include credentials in the request
   })
 );
