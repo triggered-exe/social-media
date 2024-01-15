@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 
 const Posts = ({setPage, Profile}) => {
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(0);
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
   const [createPostModal, setCreatePostModal] = useState(false);
@@ -24,11 +25,18 @@ const Posts = ({setPage, Profile}) => {
 
   // get the posts
   useEffect(() => {
+    console.log('posts page useEffect')
     handleFetchPost();
   }, [user]);
 
   const handleFetchPost = async () => {
-    dispatch(getPosts());
+    console.log("handleDeletePost")
+    const queryParams = {
+      page: currentPage+1,
+      limit: 10
+    }
+    dispatch(getPosts(queryParams));
+    setCurrentPage(currentPage+1)
   };
 
   // create post
@@ -173,6 +181,8 @@ const Posts = ({setPage, Profile}) => {
                 </div>
               </div>
             ))}
+            {/* loade more posts button */}
+            <div className={styles.loadMoreaContainer}><span onClick={()=>handleFetchPost()}>Load More...</span></div>
           </div>
         </>
       )}

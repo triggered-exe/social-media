@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Home.module.css";
 import Posts from "../Posts/Posts";
 import Profile from "../Profile/Profile";
@@ -12,40 +12,49 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(null);
-  const [isScrollingUp, setIsScrollingUp] = useState(true); // Track scroll direction
+  const [isScrollingUp, setIsScrollingUp] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const prevScrollY = useRef(0);
+  const middleContainerRef = useRef(null);
   const { user } = useSelector(selector);
 
-
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isScrollingUp, isVisible]);
+    // Attach event listeners to the middle container
+    const middleContainer = middleContainerRef.current;
+    console.log(middleContainer);
+    const handleScroll = () => {
+      const currentScrollY = middleContainer.scrollTop;
 
-  const handleScroll = () => {
-    const currentScrollPos = window.pageYOffset;
-    console.log(currentScrollPos);
-    // Check if the screen size is less than or equal to 440 pixels
-    if (window.innerWidth <= 440) {
-      setIsScrollingUp(currentScrollPos < 100); // Adjust the threshold as needed
+      const isScrollingUp = currentScrollY < prevScrollY.current;
+      prevScrollY.current = currentScrollY;
+      isScrollingUp ? console.log("scroll up") : console.log("scroll down");
 
       // Show/hide the sidebar based on scrolling direction
       if (isScrollingUp !== isVisible) {
+        console.log("scroll up");
         setIsVisible(isScrollingUp);
       }
-    }
-  };
+    };
+
+    middleContainer.addEventListener("scroll", handleScroll);
+    middleContainer.addEventListener("touchmove", handleScroll);
+
+    return () => {
+      middleContainer.removeEventListener("scroll", handleScroll);
+      middleContainer.removeEventListener("touchmove", handleScroll);
+    };
+  }, [isScrollingUp, isVisible]);
 
   return (
-     <div className={styles.main}>
+    <div className={styles.main}>
       {/* left side navigation bar */}
-      <section className={`${styles.leftSidebar} ${isVisible ? "" : styles.hidden}`}>
+      <section
+        className={`${styles.leftSidebar} ${isVisible ? "" : styles.hidden}`}
+      >
         <div
           className={styles.navListItem}
           onClick={() => {
-            setPage(<Posts temp='joo' setPage={setPage} Profile={Profile} />);
+            setPage(<Posts temp="joo" setPage={setPage} Profile={Profile} />);
           }}
         >
           <img
@@ -126,7 +135,9 @@ const Home = () => {
       </section>
 
       {/* middle container */}
-      <div className={styles.middleContainer}>{ page || <Posts setPage={setPage} Profile={Profile} />}</div>
+      <div ref={middleContainerRef} className={styles.middleContainer}>
+        {page || <Posts setPage={setPage} Profile={Profile} />}
+      </div>
 
       {/* right side bar */}
       <div className={styles.rightSidebar}></div>

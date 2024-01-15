@@ -50,7 +50,7 @@ export const getSinglePost = async (req, res, next) => {
 export const getAllPost = async (req, res, next) => {
     try {
         const { page = 1, limit = 10 } = req.query;
-
+        console.log(page, limit)
         // Convert page and limit to integers
         const parsedPage = parseInt(page);
         const parsedLimit = parseInt(limit);
@@ -284,10 +284,10 @@ export const deleteComment = async (req, res, next) => {
 // function to like a post.
 export const likePost = async (req, res, next) => {
     try {
+
+        console.log('like controller')
         
         if(!req.params.id) return next(new customError("Post id is required", 400));
-
-        console.log(req.params)
 
         const post = await Post.findById(req.params.id)
         .populate({
@@ -299,8 +299,6 @@ export const likePost = async (req, res, next) => {
         if(!post){
             return next(new customError("Post not found", 404));
         }
-
-        console.log(req.user)
 
         // Check if the user already liked the post
         if (post.likes?.includes(req.user._id)) {

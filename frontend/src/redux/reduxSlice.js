@@ -23,8 +23,11 @@ const reduxSlice = createSlice({
             state.loading = false;
             state.user = action.payload;
         },
+        setPaginationPosts: (state, action) => {
+          state.posts = [...state.posts, ...action.payload]
+        },
         setPosts : (state, action) => {
-            state.posts = action.payload;
+          state.posts = [...action.payload];
         }
     }
 })
@@ -92,9 +95,11 @@ export const logout = createAsyncThunk('users/logout', async (_, thunkAPI) => {
 //   get posts function
 export const getPosts = createAsyncThunk('users/getPosts', async ( queryParams, thunkAPI) => {
     try {
+      console.log(queryParams)
+      console.log('get posts')
       const response = await axios.get('/api/post/getpost', { params: queryParams });
       console.log(response.data.posts)    
-      thunkAPI.dispatch(actions.setPosts(response.data.posts)); // Dispatch the action with user data
+      thunkAPI.dispatch(actions.setPaginationPosts(response.data.posts)); // Dispatch the action with user data
     //   toast.success(response.data.message)
     } catch (err) {
     //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
@@ -122,7 +127,7 @@ export const getSinglePost = createAsyncThunk('users/getSinglePost', async (id, 
 //   like a post
 export const likePost = createAsyncThunk('users/likePost', async ({id, posts, profilePage, index}, thunkAPI) => {
     try {
-        console.log(id)
+        console.log( posts)
       const response = await axios.post(`/api/post/likepost/${id}`);
       const updatedPost = response.data.post;
 
@@ -132,6 +137,7 @@ export const likePost = createAsyncThunk('users/likePost', async ({id, posts, pr
       }else{
         let newPosts = [...posts];
         newPosts[index] = updatedPost;
+        console.log( newPosts)
         thunkAPI.dispatch(actions.setPosts(newPosts)); // Assuming you have a setPosts action
       }
     } catch (err) {
@@ -149,7 +155,7 @@ export const deletePost = createAsyncThunk('users/deletePost', async ({id, posts
         let newPosts = [...posts];
         newPosts.splice(index, 1); // Remove 1 element at the specified index
             // Update the state with the updated posts array
-            thunkAPI.dispatch(actions.setPosts(newPosts)); // Assuming you have a setPosts action
+            thunkAPI.dispatch(actions.setPaginationPosts(newPosts)); // Assuming you have a setPaginationPosts action
         const response = await axios.delete(`/api/post/deletepost/${id}`);
         const updatedPost = response.data.post;
 
@@ -202,7 +208,7 @@ export const getUserProfile = createAsyncThunk('users/getUserProfile', async (id
       const response = await axios.get(`/api/user/getuserprofile/${id}`);
     //   thunkAPI.dispatch(actions.setUserProfile(response.data.user)); // Dispatch the action with user data
      toast.success(response.data.message)
-    return response.data.user;
+     return response.data.user;
     } catch (err) {
     //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
       console.log(err.response); // Log the error response

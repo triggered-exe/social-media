@@ -157,6 +157,29 @@
     color: red;
  }
 
+ .loadMoreaContainer {
+  width: 100%;
+  background-color: transparent;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .loadMoreaContainer span {
+  width: 150px;
+  text-align: center;
+  padding: 10px;
+  background-color: #1da1f2;
+  border: 1px solid white;
+  cursor: pointer;
+ }
+
+ .loadMoreaContainer span:active {
+  transform: scale(0.95);
+ }
+
+
 /* CreatePostModal.module.css */
 .overlay {
     position: fixed;
