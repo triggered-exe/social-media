@@ -157,9 +157,26 @@ span {
 @media screen and (max-width: 440px) {
 
     .leftSidebar {
-        display: none;
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: none;
+        background-color: #007bff;
+        width: 100vw;
+        padding: 5px 0;
     }
 
+    .hidden {
+        display: none;
+    }
+    
+    .navListItem{
+        min-width: 1vw;
+        padding: 20px 9px;
+    }
+
+    
     .rightSidebar{
        display: none;
     }

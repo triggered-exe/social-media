@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import Posts from "../Posts/Posts";
 import Profile from "../Profile/Profile";
@@ -12,13 +12,36 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(null);
-  // const [modal, setModal] = useState(false);
+  const [isScrollingUp, setIsScrollingUp] = useState(true); // Track scroll direction
+  const [isVisible, setIsVisible] = useState(true);
   const { user } = useSelector(selector);
+
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isScrollingUp, isVisible]);
+
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    console.log(currentScrollPos);
+    // Check if the screen size is less than or equal to 440 pixels
+    if (window.innerWidth <= 440) {
+      setIsScrollingUp(currentScrollPos < 100); // Adjust the threshold as needed
+
+      // Show/hide the sidebar based on scrolling direction
+      if (isScrollingUp !== isVisible) {
+        setIsVisible(isScrollingUp);
+      }
+    }
+  };
 
   return (
      <div className={styles.main}>
       {/* left side navigation bar */}
-      <section className={styles.leftSidebar}>
+      <section className={`${styles.leftSidebar} ${isVisible ? "" : styles.hidden}`}>
         <div
           className={styles.navListItem}
           onClick={() => {
