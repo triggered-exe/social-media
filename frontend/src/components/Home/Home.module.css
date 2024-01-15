@@ -165,6 +165,7 @@ span {
         background-color: #007bff;
         width: 100vw;
         padding: 5px 0;
+        z-index: 1;
     }
 
     .hidden {

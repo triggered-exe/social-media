@@ -151,13 +151,20 @@ export const likePost = createAsyncThunk('users/likePost', async ({id, posts, pr
 //   delete a post
 export const deletePost = createAsyncThunk('users/deletePost', async ({id, posts, index}, thunkAPI) => {
     try {
+      // chech whether the post to be deleted is from the userPost page or profile page
+        if(!posts){
+          const response = await axios.delete(`/api/post/deletepost/${id}`);
+          toast.success(response.data.message)
+          return;
+        }
         // Find the index of the post in the existing posts array
         let newPosts = [...posts];
         newPosts.splice(index, 1); // Remove 1 element at the specified index
             // Update the state with the updated posts array
-            thunkAPI.dispatch(actions.setPaginationPosts(newPosts)); // Assuming you have a setPaginationPosts action
+         thunkAPI.dispatch(actions.setPosts(newPosts)); // Assuming you have a setPaginationPosts action
         const response = await axios.delete(`/api/post/deletepost/${id}`);
         const updatedPost = response.data.post;
+        toast.success(response.data.message)
 
     } catch (err) {
     //   thunkAPI.dispatch(actions.setAuthStatus(null)); // Dispatch the action with null for user
@@ -216,7 +223,6 @@ export const getUserProfile = createAsyncThunk('users/getUserProfile', async (id
     }
   });
 
-
 //   update user profile
 export const updateProfile = createAsyncThunk('users/updateprofile', async (data, thunkAPI) => {
     try {
@@ -234,7 +240,6 @@ export const updateProfile = createAsyncThunk('users/updateprofile', async (data
       toast.error((err.response.data.message) ? (err.response.data.message) : (err.response.statusText));
     }
   });
-
 
 //   add a new Comment
 export const addComment = createAsyncThunk('users/addComment', async ({id, content}, thunkAPI) => {

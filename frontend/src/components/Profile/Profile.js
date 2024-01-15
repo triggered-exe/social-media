@@ -87,7 +87,11 @@ import { Hourglass } from "react-loader-spinner";
 
   const handleDeletePost = (id, index) => {
     // passing the id to fetch the post and posts , index to update the posts array
-    dispatch(deletePost({ id, userPosts, index }));
+    let newPost = [...profilePosts];
+    newPost.splice(index, 1);
+    console.log(newPost);
+    setProfilePosts(newPost);
+    dispatch(deletePost({ id }));
   };
 
   const handleUpdateProfileFormSumit = (e) => {
